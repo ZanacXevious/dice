@@ -42,7 +42,6 @@ class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     controller!.removeListener(tabListener);
     shakeDetector!.stopListening();
     super.dispose();
