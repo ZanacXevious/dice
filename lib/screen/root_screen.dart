@@ -14,6 +14,18 @@ class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     controller = TabController(length: 2, vsync: this);
+    controller!.addListener(tabListener);
+  }
+
+  tabListener() {
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    controller!.removeListener(tabListener);
+    super.dispose();
   }
 
   @override
@@ -26,38 +38,44 @@ class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
       bottomNavigationBar: renderBottomNavigation(),
     );
   }
-}
 
-List<Widget> renderChildren() {
-  return [
-    Container(
-      child: Center(
-          child: Text(
-        'Tab 1',
-        style: TextStyle(color: Colors.white),
-      )),
-    ),
-    Container(
-      child: Center(
-          child: Text(
-        'Tab 2',
-        style: TextStyle(color: Colors.white),
-      )),
-    )
-  ];
-}
+  List<Widget> renderChildren() {
+    return [
+      Container(
+        child: Center(
+            child: Text(
+          'Tab 1',
+          style: TextStyle(color: Colors.white),
+        )),
+      ),
+      Container(
+        child: Center(
+            child: Text(
+          'Tab 2',
+          style: TextStyle(color: Colors.white),
+        )),
+      )
+    ];
+  }
 
-BottomNavigationBar renderBottomNavigation() {
-  return BottomNavigationBar(
-    items: [
-      BottomNavigationBarItem(
-        icon: Icon(Icons.edgesensor_high_outlined),
-        label: '주사위',
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.settings),
-        label: '설정',
-      ),
-    ],
-  );
+  BottomNavigationBar renderBottomNavigation() {
+    return BottomNavigationBar(
+      currentIndex: controller!.index,
+      onTap: (int index) {
+        setState(() {
+          controller!.animateTo(index);
+        });
+      },
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.edgesensor_high_outlined),
+          label: '주사위',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: '설정',
+        ),
+      ],
+    );
+  }
 }
