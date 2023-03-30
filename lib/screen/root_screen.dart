@@ -29,7 +29,22 @@ class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
 }
 
 List<Widget> renderChildren() {
-  return [];
+  return [
+    Container(
+      child: Center(
+          child: Text(
+        'Tab 1',
+        style: TextStyle(color: Colors.white),
+      )),
+    ),
+    Container(
+      child: Center(
+          child: Text(
+        'Tab 2',
+        style: TextStyle(color: Colors.white),
+      )),
+    )
+  ];
 }
 
 BottomNavigationBar renderBottomNavigation() {
