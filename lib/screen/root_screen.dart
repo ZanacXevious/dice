@@ -1,5 +1,8 @@
 import 'package:dice/screen/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:dice/screen/settings_screen.dart';
+import 'dart:math';
+import 'package:shake/shake.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
@@ -10,12 +13,27 @@ class RootScreen extends StatefulWidget {
 
 class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
   TabController? controller;
+  double threshold = 2.7;
+  int number = 1;
+  ShakeDetector? shakeDetector;
 
   @override
   void initState() {
     super.initState();
     controller = TabController(length: 2, vsync: this);
     controller!.addListener(tabListener);
+
+    shakeDetector = ShakeDetector.autoStart(
+        shakeSlopTimeMS: 100,
+        shakeThresholdGravity: threshold,
+        onPhoneShake: onPhoneShake);
+  }
+
+  void onPhoneShake() {
+    final rand = new Random();
+    setState(() {
+      number = rand.nextInt(5) + 1;
+    });
   }
 
   tabListener() {
@@ -26,6 +44,7 @@ class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
   void dispose() {
     // TODO: implement dispose
     controller!.removeListener(tabListener);
+    shakeDetector!.stopListening();
     super.dispose();
   }
 
@@ -43,14 +62,17 @@ class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
   List<Widget> renderChildren() {
     return [
       HomeScreen(number: 1),
-      Container(
-        child: Center(
-            child: Text(
-          'Tab 2',
-          style: TextStyle(color: Colors.white),
-        )),
-      )
+      SettingScreen(
+        threshold: threshold,
+        onThresholdChange: onThresholdChange,
+      ),
     ];
+  }
+
+  void onThresholdChange(double val) {
+    setState(() {
+      threshold = val;
+    });
   }
 
   BottomNavigationBar renderBottomNavigation() {
