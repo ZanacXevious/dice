@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
 
-class RootScreen extends StatelessWidget {
+class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
+
+  @override
+  State<RootScreen> createState() => _RootScreenState();
+}
+
+class _RootScreenState extends State<RootScreen> with TickerProviderStateMixin {
+  TabController? controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TabController(length: 2, vsync: this);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: TabBarView(
+        controller: controller,
         children: renderChildren(),
       ),
       bottomNavigationBar: renderBottomNavigation(),
@@ -20,6 +34,15 @@ List<Widget> renderChildren() {
 
 BottomNavigationBar renderBottomNavigation() {
   return BottomNavigationBar(
-    items: [],
+    items: [
+      BottomNavigationBarItem(
+        icon: Icon(Icons.edgesensor_high_outlined),
+        label: '주사위',
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.settings),
+        label: '설정',
+      ),
+    ],
   );
 }

@@ -1,4 +1,5 @@
 import 'package:dice/screen/home_screen.dart';
+import 'package:dice/screen/root_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:dice/const/colors.dart';
 
@@ -17,6 +18,6 @@ void main() {
         backgroundColor: backgroundColor,
       ),
     ),
-    home: HomeScreen(),
+    home: RootScreen(),
   ));
 }
